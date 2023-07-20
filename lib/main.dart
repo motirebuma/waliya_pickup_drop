@@ -17,7 +17,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: Pickup_Drop_Screen(),
+      home: Pickup_Drop_Screen(
+        selectedPickupLocation: '',
+        selectedDropLocation: '',
+        pickupCountry: '',
+        pickupDate: '',
+        dropDate: '',
+        dropCountry: '',
+      ),
     );
   }
 }

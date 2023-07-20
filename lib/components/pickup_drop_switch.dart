@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:waliya_test/components/Info.dart';
-import 'package:waliya_test/components/drop_information.dart';
 
 class PickupDropSwitch extends StatefulWidget {
-  const PickupDropSwitch({super.key});
+  final String selectedPickupLocation;
+  final String selectedDropLocation;
+  final String pickupDate;
+  final String dropDate;
+  final String pickupCountry;
+  final String dropCountry;
+
+  const PickupDropSwitch({
+    super.key,
+    required this.selectedPickupLocation,
+    required this.selectedDropLocation,
+    required this.dropCountry,
+    required this.dropDate,
+    required this.pickupCountry,
+    required this.pickupDate,
+  });
 
   @override
   State<PickupDropSwitch> createState() => _PickupDropSwitchState();
@@ -13,14 +27,28 @@ class PickupDropSwitch extends StatefulWidget {
 class _PickupDropSwitchState extends State<PickupDropSwitch> {
   bool isPickupSelected = true;
   bool isDropSelected = true;
+  String _selectedPickupLocation = '';
+  String _selectedDropLocation = '';
 
   Widget pickupInformation(state) {
+    setState(() {
+      _selectedPickupLocation = widget.selectedPickupLocation;
+    });
     if (state) {
-      return const InfoPickDrop(
-        type: 'Pickup Information',
-        dateType: 'Pickup Date',
-        countryType: 'Pickup Country',
-        locType: 'Pickup Location',
+      return InfoPickDrop(
+        title: 'Pickup Information',
+        pickDropDate: 'Pickup Date',
+        pickDropCountry: 'Pickup Country',
+        pickDropLocation: _selectedPickupLocation.isNotEmpty
+            ? _selectedPickupLocation
+            : 'Pickup Location',
+        pickOrDrop: 'pickup',
+        selectedPickupLocation: widget.selectedPickupLocation,
+        selectedDropLocation: widget.selectedDropLocation,
+        pickupCountry: widget.pickupCountry,
+        pickupDate: widget.pickupDate,
+        dropCountry: widget.dropCountry,
+        dropDate: widget.dropDate,
       );
     } else {
       return const Text('Pickup location is not selected');
@@ -29,12 +57,24 @@ class _PickupDropSwitchState extends State<PickupDropSwitch> {
 
   // drop
   Widget dropInformation(state) {
+    setState(() {
+      _selectedDropLocation = widget.selectedDropLocation;
+    });
     if (state) {
-      return const InfoPickDrop(
-        type: 'Drop Information',
-        dateType: 'Drop Date',
-        countryType: 'Drop Country',
-        locType: 'Drop Location',
+      return InfoPickDrop(
+        title: 'Drop Information',
+        pickDropDate: 'Drop Date',
+        pickDropCountry: 'Drop Country',
+        pickDropLocation: _selectedDropLocation.isNotEmpty
+            ? _selectedDropLocation
+            : 'Drop Location',
+        pickOrDrop: 'drop',
+        selectedPickupLocation: widget.selectedPickupLocation,
+        selectedDropLocation: widget.selectedDropLocation,
+        pickupCountry: widget.pickupCountry,
+        pickupDate: widget.pickupDate,
+        dropCountry: widget.dropCountry,
+        dropDate: widget.dropDate,
       );
     } else {
       return const Text('Drop location is not selected');

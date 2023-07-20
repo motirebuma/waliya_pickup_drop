@@ -1,20 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:waliya_test/components/LocationCard.dart';
-import 'package:waliya_test/components/LocationSearch.dart';
+import 'package:waliya_test/screen/loc_search_screen.dart';
 
 class InfoPickDrop extends StatefulWidget {
-  final String type;
-  final String dateType;
-  final String countryType;
-  final String locType;
+  final String title;
+  final String pickDropDate;
+  final String pickDropCountry;
+  final String pickDropLocation;
+  final String pickOrDrop;
+  final String selectedPickupLocation;
+  final String selectedDropLocation;
+  final String pickupDate;
+  final String dropDate;
+  final String pickupCountry;
+  final String dropCountry;
 
-  // const DorpInformation({super.key});
-  const InfoPickDrop(
-      {super.key,
-      required this.type,
-      required this.dateType,
-      required this.countryType,
-      required this.locType});
+  const InfoPickDrop({
+    super.key,
+    required this.title,
+    required this.pickDropDate,
+    required this.pickDropCountry,
+    required this.pickDropLocation,
+    required this.pickOrDrop,
+    required this.selectedPickupLocation,
+    required this.selectedDropLocation,
+    required this.dropCountry,
+    required this.dropDate,
+    required this.pickupCountry,
+    required this.pickupDate,
+  });
   @override
   State<InfoPickDrop> createState() => _InfoPickDropState();
 }
@@ -43,15 +57,39 @@ class _InfoPickDropState extends State<InfoPickDrop> {
     }
   }
 
-  Widget dropLocation(country) {
+  // pickup loacation || drop location
+  Widget location(country) {
+    String dropValue = '';
+
     if (country == 'Ethiopia 🇪🇹') {
+      setState(() {
+        dropValue = widget.pickDropLocation;
+      });
       return LocationBox().locationBox(
-        widget.locType,
+        dropValue,
         () => {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LocationSearch(),
+              builder: (context) => LocationSearch(
+                pick_or_drop_location: widget.pickOrDrop,
+                selectedPickupLocation: widget.selectedPickupLocation,
+                selectedDropLocation: widget.selectedDropLocation,
+                // pick
+                pickupCountry: widget.pickOrDrop == 'pickup'
+                    ? selectedCountry
+                    : widget.pickupCountry,
+                pickupDate: widget.pickOrDrop == 'pickup'
+                    ? _selectedDate.toString()
+                    : widget.pickupDate,
+                // drop
+                dropCountry: widget.pickOrDrop == 'drop'
+                    ? selectedCountry
+                    : widget.dropCountry,
+                dropDate: widget.pickOrDrop == 'drop'
+                    ? _selectedDate.toString()
+                    : widget.dropDate,
+              ),
             ),
           ),
         },
@@ -85,7 +123,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
               height: 25,
             ),
             Text(
-              widget.type,
+              widget.title,
               style: const TextStyle(
                 color: Color(0xff1c1c1c),
                 fontSize: 20.0,
@@ -96,7 +134,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  widget.dateType,
+                  widget.pickDropDate,
                   style: const TextStyle(
                     color: Color(0xff1c1c1c),
                     fontSize: 16.0,
@@ -124,7 +162,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  widget.countryType,
+                  widget.pickDropCountry,
                   style: const TextStyle(
                     color: Color(0xff1c1c1c),
                     fontSize: 16.0,
@@ -166,7 +204,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
               ],
             ),
             // PickupLocation(),
-            dropLocation(selectedCountry),
+            location(selectedCountry),
           ],
         ),
       ),
