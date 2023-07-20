@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:waliya_test/components/LocationCard.dart';
+import 'package:waliya_test/components/LocationSearch.dart';
 import 'package:waliya_test/components/pickup_location.dart';
 
 class DorpInformation extends StatefulWidget {
@@ -134,7 +136,18 @@ class _DorpInformationState extends State<DorpInformation> {
                 ),
               ],
             ),
-            PickupLocation(),
+            // PickupLocation(),
+            LocationBox().locationBox(
+              'Drop Location',
+              () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationSearch(),
+                  ),
+                ),
+              },
+            )
           ],
         ),
       ),

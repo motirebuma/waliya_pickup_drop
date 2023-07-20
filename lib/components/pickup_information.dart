@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:waliya_test/components/LocationSearch.dart';
+import 'package:waliya_test/components/LocationCard.dart';
 import 'package:waliya_test/components/pickup_location.dart';
+import 'package:waliya_test/screen/pickup_drop_page.dart';
 
 class PickupInfo extends StatefulWidget {
   const PickupInfo({super.key});
@@ -134,7 +137,19 @@ class _PickupInfoState extends State<PickupInfo> {
                 ),
               ],
             ),
-            PickupLocation(),
+            // PickupLocation(),
+
+            LocationBox().locationBox(
+              'Pickup Location',
+              () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LocationSearch(),
+                  ),
+                ),
+              },
+            )
           ],
         ),
       ),

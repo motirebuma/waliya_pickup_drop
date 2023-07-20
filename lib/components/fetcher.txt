@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class LocationInputWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Location Input'),
+      ),
+      body: LocationSearch(),
+    );
+  }
+}
+
+class LocationSearch extends StatefulWidget {
+  @override
+  _LocationSearchState createState() => _LocationSearchState();
+}
+
+class _LocationSearchState extends State<LocationSearch> {
+  List<String> _locations = [];
+
+  Future<List<String>> _getLocationSuggestions(String query) async {
+    String url = "http://amircreations.com/walya/get_all_places.php";
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = json.decode(response.body)['response'];
+      List<String> cityNames = [];
+      for (var location in data) {
+        String cityName = location['city'];
+        if (cityName.isNotEmpty &&
+            cityName.toLowerCase().contains(query.toLowerCase())) {
+          cityNames.add(cityName);
+        }
+      }
+      return cityNames;
+    } else {
+      return [];
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+          autofocus: true,
+          decoration: InputDecoration(
+            hintText: 'Enter your location...',
+            border: OutlineInputBorder(),
+          ),
+        ),
+        suggestionsCallback: (pattern) async {
+          return await _getLocationSuggestions(pattern);
+        },
+        itemBuilder: (context, suggestion) {
+          return ListTile(
+            title: Text(suggestion),
+          );
+        },
+        onSuggestionSelected: (suggestion) {
+          // Do something with the selected location suggestion
+          print('Selected Location: $suggestion');
+        },
+      ),
+    );
+  }
+}

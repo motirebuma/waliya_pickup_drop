@@ -15,7 +15,7 @@ class _PickupDropCheckboxState extends State<PickupDropCheckbox> {
     return Padding(
       padding: const EdgeInsets.only(right: 30, left: 30, top: 5, bottom: 5),
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(

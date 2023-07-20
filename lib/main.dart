@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:waliya_test/components/pickup_location.dart';
 import 'package:waliya_test/screen/pickup_drop_page.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const Pickup_Drop_Screen(),
+      home: Pickup_Drop_Screen(),
     );
   }
 }
