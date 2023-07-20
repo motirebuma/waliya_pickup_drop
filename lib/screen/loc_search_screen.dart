@@ -50,7 +50,8 @@ class _LocationSearchState extends State<LocationSearch> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Location'),
+          title: Text('Select Location'),
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -58,8 +59,8 @@ class _LocationSearchState extends State<LocationSearch> {
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: true,
               controller: _textEditingController,
-              decoration: InputDecoration(
-                hintText: 'Enter your location...',
+              decoration: const InputDecoration(
+                hintText: 'City',
                 border: OutlineInputBorder(),
               ),
             ),

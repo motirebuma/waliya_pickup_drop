@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:waliya_test/components/pickup_location.dart';
 import 'package:waliya_test/screen/pickup_drop_page.dart';
 
 void main() {

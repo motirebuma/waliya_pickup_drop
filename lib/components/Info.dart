@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:waliya_test/components/LocationCard.dart';
 import 'package:waliya_test/components/LocationSearch.dart';
-import 'package:waliya_test/components/pickup_location.dart';
 
-class DorpInformation extends StatefulWidget {
-  const DorpInformation({super.key});
+class InfoPickDrop extends StatefulWidget {
+  final String type;
+  final String dateType;
+  final String countryType;
+  final String locType;
 
+  // const DorpInformation({super.key});
+  const InfoPickDrop(
+      {super.key,
+      required this.type,
+      required this.dateType,
+      required this.countryType,
+      required this.locType});
   @override
-  State<DorpInformation> createState() => _DorpInformationState();
+  State<InfoPickDrop> createState() => _InfoPickDropState();
 }
 
-class _DorpInformationState extends State<DorpInformation> {
+class _InfoPickDropState extends State<InfoPickDrop> {
   DateTime initial = DateTime.now();
   DateTime last = DateTime.now();
 
@@ -34,6 +43,24 @@ class _DorpInformationState extends State<DorpInformation> {
     }
   }
 
+  Widget dropLocation(country) {
+    if (country == 'Ethiopia 🇪🇹') {
+      return LocationBox().locationBox(
+        widget.locType,
+        () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LocationSearch(),
+            ),
+          ),
+        },
+      );
+    } else {
+      return const Text('');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,10 +81,12 @@ class _DorpInformationState extends State<DorpInformation> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // !this will be edited!
-            const Text(
-              'Drop Information',
-              style: TextStyle(
+            const SizedBox(
+              height: 25,
+            ),
+            Text(
+              widget.type,
+              style: const TextStyle(
                 color: Color(0xff1c1c1c),
                 fontSize: 20.0,
               ),
@@ -66,9 +95,9 @@ class _DorpInformationState extends State<DorpInformation> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text(
-                  'Drop date',
-                  style: TextStyle(
+                Text(
+                  widget.dateType,
+                  style: const TextStyle(
                     color: Color(0xff1c1c1c),
                     fontSize: 16.0,
                   ),
@@ -94,9 +123,9 @@ class _DorpInformationState extends State<DorpInformation> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Text(
-                  'Drop Country',
-                  style: TextStyle(
+                Text(
+                  widget.countryType,
+                  style: const TextStyle(
                     color: Color(0xff1c1c1c),
                     fontSize: 16.0,
                   ),
@@ -137,17 +166,7 @@ class _DorpInformationState extends State<DorpInformation> {
               ],
             ),
             // PickupLocation(),
-            LocationBox().locationBox(
-              'Drop Location',
-              () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LocationSearch(),
-                  ),
-                ),
-              },
-            )
+            dropLocation(selectedCountry),
           ],
         ),
       ),

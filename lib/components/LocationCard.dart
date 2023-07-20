@@ -13,7 +13,7 @@ class LocationBox {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 border: Border.all(width: 1, color: Colors.grey),
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(5),
               ),
               child: Row(
                 children: [
