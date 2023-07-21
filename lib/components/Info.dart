@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:waliya_test/components/LocationCard.dart';
+import 'package:waliya_test/providers/data_provider.dart';
 import 'package:waliya_test/screen/loc_search_screen.dart';
+import 'package:provider/provider.dart';
 
 class InfoPickDrop extends StatefulWidget {
   final String title;
@@ -8,13 +10,6 @@ class InfoPickDrop extends StatefulWidget {
   final String pickDropCountry;
   final String pickDropLocation;
   final String pickOrDrop;
-  final String selectedPickupLocation;
-  final String selectedDropLocation;
-  final String pickupDate;
-  final String dropDate;
-  final String pickupCountry;
-  final String dropCountry;
-
   const InfoPickDrop({
     super.key,
     required this.title,
@@ -22,12 +17,6 @@ class InfoPickDrop extends StatefulWidget {
     required this.pickDropCountry,
     required this.pickDropLocation,
     required this.pickOrDrop,
-    required this.selectedPickupLocation,
-    required this.selectedDropLocation,
-    required this.dropCountry,
-    required this.dropDate,
-    required this.pickupCountry,
-    required this.pickupDate,
   });
   @override
   State<InfoPickDrop> createState() => _InfoPickDropState();
@@ -39,10 +28,8 @@ class _InfoPickDropState extends State<InfoPickDrop> {
 
   // dropdown country
   String selectedCountry = 'Ethiopia 🇪🇹';
-
   // day picker
   DateTime _selectedDate = DateTime.now();
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -51,6 +38,13 @@ class _InfoPickDropState extends State<InfoPickDrop> {
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _selectedDate) {
+      if (widget.pickOrDrop == 'pickup') {
+        Provider.of<DataProvider>(context, listen: false)
+            .setPickDateTime(picked);
+      } else {
+        Provider.of<DataProvider>(context, listen: false)
+            .setDropDateTime(picked);
+      }
       setState(() {
         _selectedDate = picked;
       });
@@ -59,37 +53,20 @@ class _InfoPickDropState extends State<InfoPickDrop> {
 
   // pickup loacation || drop location
   Widget location(country) {
-    String dropValue = '';
+    String pickdropValue = '';
 
     if (country == 'Ethiopia 🇪🇹') {
       setState(() {
-        dropValue = widget.pickDropLocation;
+        pickdropValue = widget.pickDropLocation;
       });
       return LocationBox().locationBox(
-        dropValue,
+        pickdropValue,
         () => {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LocationSearch(
-                pick_or_drop_location: widget.pickOrDrop,
-                selectedPickupLocation: widget.selectedPickupLocation,
-                selectedDropLocation: widget.selectedDropLocation,
-                // pick
-                pickupCountry: widget.pickOrDrop == 'pickup'
-                    ? selectedCountry
-                    : widget.pickupCountry,
-                pickupDate: widget.pickOrDrop == 'pickup'
-                    ? _selectedDate.toString()
-                    : widget.pickupDate,
-                // drop
-                dropCountry: widget.pickOrDrop == 'drop'
-                    ? selectedCountry
-                    : widget.dropCountry,
-                dropDate: widget.pickOrDrop == 'drop'
-                    ? _selectedDate.toString()
-                    : widget.dropDate,
-              ),
+              builder: (context) =>
+                  LocationSearch(pick_or_drop_location: widget.pickOrDrop),
             ),
           ),
         },
@@ -102,7 +79,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 30, left: 30, top: 10, bottom: 10),
+      padding: const EdgeInsets.all(10),
       child: Container(
         padding: const EdgeInsets.only(top: 10, bottom: 10),
         decoration: BoxDecoration(
@@ -129,7 +106,6 @@ class _InfoPickDropState extends State<InfoPickDrop> {
                 fontSize: 20.0,
               ),
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -157,7 +133,6 @@ class _InfoPickDropState extends State<InfoPickDrop> {
                 ),
               ],
             ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -168,10 +143,8 @@ class _InfoPickDropState extends State<InfoPickDrop> {
                     fontSize: 16.0,
                   ),
                 ),
-                // ! this will be change to button
                 DropdownButton<String>(
                   value: selectedCountry,
-                  // isExpanded: true,
                   items: <String>[
                     'Ethiopia 🇪🇹',
                     'Ertrea 🇪🇷',
@@ -181,6 +154,13 @@ class _InfoPickDropState extends State<InfoPickDrop> {
                     'South Sudan 🇸🇸',
                     'Somalia 🇸🇴'
                   ].map<DropdownMenuItem<String>>((String value) {
+                    if (widget.pickOrDrop == 'pickup') {
+                      Provider.of<DataProvider>(context, listen: false)
+                          .setPickCountry(selectedCountry);
+                    } else {
+                      Provider.of<DataProvider>(context, listen: false)
+                          .setDropCountry(selectedCountry);
+                    }
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(

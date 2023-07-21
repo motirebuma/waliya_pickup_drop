@@ -1,22 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:waliya_test/components/ConfimBox.dart';
 
 class ConfirmScreen extends StatelessWidget {
-  final String pickDateTime;
-  final String pickCountry;
-  final String pickLocation;
-
-  final String dropDateTime;
-  final String dropCountry;
-  final String dropLocation;
-
   const ConfirmScreen({
     Key? key,
-    required this.pickDateTime,
-    required this.pickCountry,
-    required this.pickLocation,
-    required this.dropDateTime,
-    required this.dropCountry,
-    required this.dropLocation,
   }) : super(key: key);
 
   @override
@@ -24,17 +11,33 @@ class ConfirmScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Confirm Screen'),
+        title: const Text('Confirm Information'),
+        elevation: 0,
       ),
       body: Column(
         children: [
-          Text('Pickup Date: $pickDateTime'),
-          Text('Pickup Country: $pickCountry'),
-          Text('Pickup Location: $pickLocation'),
-          Text('Drop Date: $dropDateTime'),
-          Text('Drop Country: $dropCountry'),
-          Text('Drop Location: $dropLocation'),
-          // Add any other information you want to display on the confirmation screen
+          // confirm widget
+          ConfirmBox().confirmBox(context),
+
+          // confirm button
+          Container(
+            padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+            height: 55,
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: null,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+              ),
+              child: const Text(
+                'Confirm',
+                style: TextStyle(
+                  color: Color(0xff1c1c1c),
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -2,33 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'package:provider/provider.dart';
+import 'package:waliya_test/providers/data_provider.dart';
 import 'package:waliya_test/screen/pickup_drop_page.dart';
 
 class LocationSearch extends StatefulWidget {
   final String pick_or_drop_location;
-  final String selectedPickupLocation;
-  final String selectedDropLocation;
-  final String pickupDate;
-  final String pickupCountry;
-  final String dropDate;
-  final String dropCountry;
 
-  LocationSearch({
+  const LocationSearch({
+    super.key,
     required this.pick_or_drop_location,
-    required this.selectedPickupLocation,
-    required this.selectedDropLocation,
-    required this.pickupDate,
-    required this.pickupCountry,
-    required this.dropDate,
-    required this.dropCountry,
   });
   @override
   _LocationSearchState createState() => _LocationSearchState();
 }
 
 class _LocationSearchState extends State<LocationSearch> {
-  TextEditingController _textEditingController = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void dispose() {
@@ -38,7 +28,8 @@ class _LocationSearchState extends State<LocationSearch> {
 
   Future<List<String>> _getLocationSuggestions(String query) async {
     if (query.isEmpty) {
-      return []; // Return an empty list when the input is empty
+      // Return an empty list when the input is empty
+      return [];
     }
 
     String url = "http://amircreations.com/walya/get_all_places.php";
@@ -51,7 +42,6 @@ class _LocationSearchState extends State<LocationSearch> {
         String cityName = location['city'];
         String zone = location['zone'];
         String title = location['title'];
-
         // Perform null checks before creating the suggestion
         if (cityName != null &&
             cityName.toLowerCase().contains(query.toLowerCase())) {
@@ -59,20 +49,19 @@ class _LocationSearchState extends State<LocationSearch> {
           citySuggestions.add(suggestion);
         }
       }
-      return citySuggestions.toList(); // Convert Set to List for suggestions
+      return citySuggestions.toList();
     } else {
       return [];
     }
   }
 
-  String? searchResultForPickup;
-  String? searchResultForDrop;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Select Location'),
         centerTitle: true,
+        elevation: 0,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -93,47 +82,31 @@ class _LocationSearchState extends State<LocationSearch> {
               title: Text(suggestion),
               trailing: ElevatedButton(
                 onPressed: () {
-                  // String _location = suggestion;
-                  String _requestedField = '';
+                  String requestedField = '';
                   setState(() {
-                    _requestedField = widget.pick_or_drop_location;
+                    requestedField = widget.pick_or_drop_location;
                   });
-
-                  if (_requestedField == 'pickup') {
-                    setState(() {
-                      searchResultForPickup = suggestion;
-                      searchResultForDrop = widget.selectedDropLocation;
-                    });
+                  if (requestedField == 'pickup') {
+                    Provider.of<DataProvider>(context, listen: false)
+                        .setPickupLocation(suggestion);
                   } else {
-                    setState(() {
-                      searchResultForDrop = suggestion;
-                      searchResultForPickup = widget.selectedPickupLocation;
-                    });
+                    Provider.of<DataProvider>(context, listen: false)
+                        .setDropLocation(suggestion);
                   }
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      // pass nesessary parameters to ConfirmScreen()
-                      builder: (context) => Pickup_Drop_Screen(
-                        selectedPickupLocation: searchResultForPickup!,
-                        selectedDropLocation: searchResultForDrop!,
-                        pickupDate: widget.pickupDate,
-                        pickupCountry: widget.pickupCountry,
-                        dropDate: widget.dropDate,
-                        dropCountry: widget.dropCountry,
-                      ),
+                      builder: (context) => const Pickup_Drop_Screen(),
                     ),
                   );
                 },
-                child: Text('Select'),
+                child: const Text('Select'),
               ),
             );
           },
-          onSuggestionSelected:
-              (suggestion) {}, // Added this line to fix the error
+          onSuggestionSelected: (suggestion) {},
         ),
       ),
     );
-    ;
   }
 }
