@@ -58,7 +58,7 @@ class ConfirmBox {
 
             // if (isNotEmpty(data.dropCountry))
             //   Text('Drop Date: ${data.dropDateTime}', style: textStyle),
-            if (isNotEmpty(data.pickCountry))
+            if (isNotEmpty(data.dropCountry))
               Text(
                   'Pickup Date: ${data.dropDateTime.day}/${data.dropDateTime.month}/${data.dropDateTime.year}',
                   style: textStyle),
