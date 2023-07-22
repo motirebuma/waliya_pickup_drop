@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:waliya_test/components/Info.dart';
+import 'package:waliya_test/components/pickupDropPageCustomizer.dart';
+import 'package:waliya_test/components/WidgetNotSelected.dart';
 import 'package:waliya_test/providers/data_provider.dart';
 import 'package:provider/provider.dart';
 
 class PickupInformation {
   Widget pickupInformation(context, state) {
     if (state) {
-      return InfoPickDrop(
+      return PD_PageCustomizer(
         title: 'Pickup Information',
         pickDropDate: 'Pickup Date',
         pickDropCountry: 'Pickup Country',
@@ -24,7 +25,8 @@ class PickupInformation {
       Provider.of<DataProvider>(context, listen: false).setPickCountry('');
       Provider.of<DataProvider>(context, listen: false).setPickupLocation('');
 
-      return const Text('Pickup location is not selected');
+      return WidgetNotSelected()
+          .notSelected('⚠️ Pickup location is not selected');
     }
   }
 }

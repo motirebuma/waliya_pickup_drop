@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:waliya_test/components/dropInformation.dart';
-import 'package:waliya_test/components/pickupInformation.dart';
+import 'package:waliya_test/components/WidgetDropInformation.dart';
+import 'package:waliya_test/components/WidgetPickupInformation.dart';
 import 'package:provider/provider.dart';
 
-class PickupDropSwitch extends StatefulWidget {
-  const PickupDropSwitch({super.key});
+class PickupDropController extends StatefulWidget {
+  const PickupDropController({super.key});
 
   @override
-  State<PickupDropSwitch> createState() => _PickupDropSwitchState();
+  State<PickupDropController> createState() => _PickupDropControllerState();
 }
 
-class _PickupDropSwitchState extends State<PickupDropSwitch> {
+class _PickupDropControllerState extends State<PickupDropController> {
   bool isPickupSelected = true;
   bool isDropSelected = true;
 

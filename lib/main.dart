@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
       ),
-      home: const Pickup_Drop_Screen(),
+      home: const PickupDropPage(),
     );
   }
 }

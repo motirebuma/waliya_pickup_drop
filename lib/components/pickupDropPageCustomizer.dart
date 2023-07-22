@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:waliya_test/components/LocationCard.dart';
+import 'package:waliya_test/components/WidgetLocationBox.dart';
 import 'package:waliya_test/providers/data_provider.dart';
 import 'package:waliya_test/screen/search_location.dart';
 import 'package:provider/provider.dart';
 
-class InfoPickDrop extends StatefulWidget {
+class PD_PageCustomizer extends StatefulWidget {
   final String title;
   final String pickDropDate;
   final String pickDropCountry;
   final String pickDropLocation;
   final String pickOrDrop;
-  const InfoPickDrop({
+  const PD_PageCustomizer({
     super.key,
     required this.title,
     required this.pickDropDate,
@@ -19,17 +19,33 @@ class InfoPickDrop extends StatefulWidget {
     required this.pickOrDrop,
   });
   @override
-  State<InfoPickDrop> createState() => _InfoPickDropState();
+  State<PD_PageCustomizer> createState() => _PD_PageCustomizerState();
 }
 
-class _InfoPickDropState extends State<InfoPickDrop> {
+class _PD_PageCustomizerState extends State<PD_PageCustomizer> {
   DateTime initial = DateTime.now();
   DateTime last = DateTime.now();
 
   // dropdown country
   String selectedCountry = 'Ethiopia 🇪🇹';
   // day picker
+
   DateTime _selectedDate = DateTime.now();
+
+  DateTime _setTime() {
+    DateTime selectDate = widget.pickOrDrop == 'pickup'
+        ? Provider.of<DataProvider>(context, listen: false).data.pickDateTime
+        : Provider.of<DataProvider>(context, listen: false).data.dropDateTime;
+    return selectDate;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = _setTime();
+  }
+
+  // DateTime selectDate = widget.pickOrDrop == 'pickup' ? Provider.of<DataProvider>(context, listen: false).data.setPickDateTime;
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -52,7 +68,7 @@ class _InfoPickDropState extends State<InfoPickDrop> {
   }
 
   // pickup loacation || drop location
-  Widget location(country) {
+  Widget locationBoxState(country) {
     String pickdropValue = '';
 
     if (country == 'Ethiopia 🇪🇹') {
@@ -183,8 +199,9 @@ class _InfoPickDropState extends State<InfoPickDrop> {
                 ),
               ],
             ),
-            // PickupLocation(),
-            location(selectedCountry),
+
+            // remove pick/drop location box if the selected country is not Ethiopia.
+            locationBoxState(selectedCountry),
           ],
         ),
       ),

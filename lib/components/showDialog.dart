@@ -10,7 +10,13 @@ class ShowDialogWidget {
         actions: [
           TextButton(
             onPressed: onTapOK,
-            child: const Text('OK'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(Colors.amber),
+            ),
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xff1c1c1c)),
+            ),
           ),
         ],
       ),

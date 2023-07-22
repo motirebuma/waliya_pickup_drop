@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:waliya_test/components/pickup_drop_switch.dart';
+import 'package:waliya_test/components/infoValidator.dart';
+import 'package:waliya_test/components/pickupDropController.dart';
 import 'package:waliya_test/components/showDialog.dart';
 import 'package:waliya_test/providers/data_provider.dart';
-import 'package:waliya_test/screen/confirm_screen.dart';
+import 'package:waliya_test/screen/confirm_page.dart';
 import 'package:provider/provider.dart';
 
-class Pickup_Drop_Screen extends StatefulWidget {
-  const Pickup_Drop_Screen({
+class PickupDropPage extends StatefulWidget {
+  const PickupDropPage({
     super.key,
   });
 
   @override
-  State<Pickup_Drop_Screen> createState() => _Pickup_Drop_ScreenState();
+  State<PickupDropPage> createState() => _PickupDropPageState();
 }
 
-class _Pickup_Drop_ScreenState extends State<Pickup_Drop_Screen> {
+class _PickupDropPageState extends State<PickupDropPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,34 +39,18 @@ class _Pickup_Drop_ScreenState extends State<Pickup_Drop_Screen> {
               ),
               child: Column(
                 children: [
-                  PickupDropSwitch(),
+                  // widget
+                  const PickupDropController(),
+
+                  // Next button
                   Container(
                     padding: const EdgeInsets.all(10),
                     height: 65,
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (Provider.of<DataProvider>(context, listen: false)
-                                .data
-                                .pickCountry
-                                .isEmpty &&
-                            Provider.of<DataProvider>(context, listen: false)
-                                .data
-                                .dropCountry
-                                .isEmpty) {
-                          ShowDialogWidget().showDialogWidget(
-                              context,
-                              'Error',
-                              'Please select pickup/drop location.',
-                              () => Navigator.pop(context));
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ConfirmScreen(),
-                            ),
-                          );
-                        }
+                        // from class Validator
+                        Validator().infoValidator(context);
                       },
                       style: ButtonStyle(
                         backgroundColor:
