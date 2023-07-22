@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-import 'package:waliya_test/components/Info.dart';
-import 'package:waliya_test/providers/data_provider.dart';
+import 'package:waliya_test/components/dropInformation.dart';
+import 'package:waliya_test/components/pickupInformation.dart';
 import 'package:provider/provider.dart';
 
 class PickupDropSwitch extends StatefulWidget {
@@ -15,53 +15,12 @@ class _PickupDropSwitchState extends State<PickupDropSwitch> {
   bool isPickupSelected = true;
   bool isDropSelected = true;
 
-  Widget pickupInformation(state) {
-    if (state) {
-      return InfoPickDrop(
-        title: 'Pickup Information',
-        pickDropDate: 'Pickup Date',
-        pickDropCountry: 'Pickup Country',
-        pickDropLocation: Provider.of<DataProvider>(context, listen: false)
-                .data
-                .pickupLocation
-                .isNotEmpty
-            ? Provider.of<DataProvider>(context, listen: false)
-                .data
-                .pickupLocation
-            : 'Pickup Location',
-        pickOrDrop: 'pickup',
-      );
-    } else {
-      Provider.of<DataProvider>(context, listen: false).setPickCountry('');
-      Provider.of<DataProvider>(context, listen: false).setPickupLocation('');
-
-      return const Text('Pickup location is not selected');
-    }
-  }
-
-  // drop
-  Widget dropInformation(state) {
-    if (state) {
-      return InfoPickDrop(
-        title: 'Drop Information',
-        pickDropDate: 'Drop Date',
-        pickDropCountry: 'Drop Country',
-        pickDropLocation: Provider.of<DataProvider>(context, listen: false)
-                .data
-                .dropLocation
-                .isNotEmpty
-            ? Provider.of<DataProvider>(context, listen: false)
-                .data
-                .dropLocation
-            : 'Drop Location',
-        pickOrDrop: 'drop',
-      );
-    } else {
-      Provider.of<DataProvider>(context, listen: false).setDropLocation('');
-      Provider.of<DataProvider>(context, listen: false).setDropCountry('');
-      return const Text('Drop location is not selected');
-    }
-  }
+  final neumorphicSwitchStyle = NeumorphicSwitchStyle(
+    activeTrackColor: Colors.amber.shade200,
+    activeThumbColor: Colors.amberAccent,
+    inactiveTrackColor: Colors.grey.shade300,
+    inactiveThumbColor: Colors.grey.shade100,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -92,12 +51,7 @@ class _PickupDropSwitchState extends State<PickupDropSwitch> {
                       isPickupSelected = newValue;
                     });
                   },
-                  style: NeumorphicSwitchStyle(
-                    activeTrackColor: Colors.amber.shade200,
-                    activeThumbColor: Colors.amberAccent,
-                    inactiveTrackColor: Colors.grey.shade300,
-                    inactiveThumbColor: Colors.grey.shade100,
-                  ),
+                  style: neumorphicSwitchStyle,
                 ),
                 const SizedBox(width: 15),
                 Text(
@@ -116,12 +70,7 @@ class _PickupDropSwitchState extends State<PickupDropSwitch> {
                       isDropSelected = newValue;
                     });
                   },
-                  style: NeumorphicSwitchStyle(
-                    activeTrackColor: Colors.amber.shade200,
-                    activeThumbColor: Colors.amberAccent,
-                    inactiveTrackColor: Colors.grey.shade300,
-                    inactiveThumbColor: Colors.grey.shade100,
-                  ),
+                  style: neumorphicSwitchStyle,
                 ),
                 const SizedBox(width: 15),
                 Text(
@@ -135,10 +84,10 @@ class _PickupDropSwitchState extends State<PickupDropSwitch> {
             ),
           ),
         ),
-        // widget pickup information
-        pickupInformation(isPickupSelected),
-        // widget drop information
-        dropInformation(isDropSelected),
+        // pickup information widget
+        PickupInformation().pickupInformation(context, isPickupSelected),
+        // Dropinformation widget
+        DropInformation().dropInformation(context, isDropSelected),
       ],
     );
   }

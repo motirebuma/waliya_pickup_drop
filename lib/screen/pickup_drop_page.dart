@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:waliya_test/components/pickup_drop_switch.dart';
+import 'package:waliya_test/components/showDialog.dart';
 import 'package:waliya_test/providers/data_provider.dart';
 import 'package:waliya_test/screen/confirm_screen.dart';
 import 'package:provider/provider.dart';
@@ -50,22 +51,13 @@ class _Pickup_Drop_ScreenState extends State<Pickup_Drop_Screen> {
                                 .isEmpty &&
                             Provider.of<DataProvider>(context, listen: false)
                                 .data
-                                .pickCountry
+                                .dropCountry
                                 .isEmpty) {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Error'),
-                              content: const Text(
-                                  'Please select pickup/drop location.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
+                          ShowDialogWidget().showDialogWidget(
+                              context,
+                              'Error',
+                              'Please select pickup/drop location.',
+                              () => Navigator.pop(context));
                         } else {
                           Navigator.push(
                             context,

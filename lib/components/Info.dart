@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:waliya_test/components/LocationCard.dart';
 import 'package:waliya_test/providers/data_provider.dart';
-import 'package:waliya_test/screen/loc_search_screen.dart';
+import 'package:waliya_test/screen/search_location.dart';
 import 'package:provider/provider.dart';
 
 class InfoPickDrop extends StatefulWidget {
